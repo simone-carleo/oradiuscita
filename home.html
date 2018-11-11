@@ -31,30 +31,32 @@
     <div class="row justify-content-center">
     <div class="alert alert-primary col-md-5" id="mainDiv">
         <div class="input-group">
-                <label class="col-xs-3 col-form-label mr-2">Orario di ingresso:</label>
+                <label class="col-xs-12 col-md-12 col-form-label mr-2">Orario di ingresso:</label>
                 <input type="number" class="form-control col-md-2" id="inputHour" min="8" max="9" placeholder="hh">
                 <div class="input-group-append input-group-prepend">
                     <span class="input-group-text">:</span>
                 </div>
                 <input type="number" disabled class="form-control col-md-2" id="inputMinute" min="0" max="59" placeholder="mm">
-                <input type="button" class="btn btn-outline-primary mr-2" id="currentTimeButton" value="adesso">
+                <input type="button" class="btn btn-outline-primary col-xs-12 col-md-3 mr-2" id="currentTimeButton" value="adesso">
             </div>
         <br>
                 <div class="input-group">
-                    <label class="col-xs-3 col-form-label mr-2">Durata del pranzo:</label>
+                    <label class="col-xs-3 col-md-12 col-form-label mr-2">Durata del pranzo:</label>
                     <input type="number" class="form-control col-md-2" min="30" max="90" id="inputPause" value="30">
                     <div class="input-group-append">
                         <span class="input-group-text">minuti</span>
-                    </div>   
+                    </div>
+                    
                 </div>
                 <!--
                 <div class="container input-group col-md-6">
                     <input type="range" class="custom-range" min="30" max="90"  step="1" id="pauseRange">
                 </div>
                 -->
-        <br>
-        <div class="container col-md-3">
-            <input type="button" class="btn btn-success" id="calcButton" value="Calcola">
+                <br>
+                <input type="button" class="btn btn-success col-xs-12 col-md-3 mr-4" id="calcButton" value="Calcola"> 
+        <div class="container">
+            
         </div>
         <br>
         <div class="collapse" id="result">
@@ -65,15 +67,14 @@
         
     </div>
     <div class="row justify-content-center col-md-12">
-            <div class="alert alert-danger collapse" role="alert" id="info">//class="alert alert-danger" role="alert"
+            <div class="alert alert-danger collapse" role="alert" id="info">
                     <span class="well h2 float-center" id="infoText"></span>
                 </div>
     </div>
     
 
 </div>
-    <div class="well float-right fixed-bottom">Codice disponibile su 
-        <a href="https://github.com/simone-carleo/ora-di-uscita">Github</a>
+    <div class="row justify-content-center">Codice disponibile su  <a href="https://github.com/simone-carleo/ora-di-uscita">Github</a>
     </div>
 </div>
 </body>
