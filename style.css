@@ -1,0 +1,12 @@
+body {
+  background: #cbf8e8;
+}
+#inputHour, #inputPause {
+  text-align: center;
+}
+#inputMinute {
+  text-align: left;
+}
+#currentTimeButton, #output {
+  margin-left: 2%;
+}
