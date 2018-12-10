@@ -1,7 +1,7 @@
 body {
   background: #cbf8e8;
 }
-#inputHour, #inputPause {
+#inputHour, #inputPause, #inputJobHours {
   text-align: center;
 }
 #inputMinute {

@@ -1,9 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("inputPause").addEventListener("change", checkPauseValue);
-  document.getElementById("inputHour").addEventListener("change", checkHourValue);
-  document.getElementById("inputMinute").addEventListener("change", checkMinuteValue);
-  document.getElementById("inputJobHours").addEventListener("change", checkHourJobValue);
-  document.getElementById("calcButton").addEventListener("click", calcola);
+  var inputHour = document.getElementById("inputHour");
+  var inputMinute = document.getElementById("inputMinute");
+  var inputPause = document.getElementById("inputPause");
+  var inputJobHours = document.getElementById("inputJobHours");
+
+  inputPause.addEventListener("change", checkPauseValue);
+  inputHour.addEventListener("change", checkHourValue);
+  inputMinute.addEventListener("change", checkMinuteValue);
+  inputJobHours.addEventListener("change", checkHourJobValue);
+  //document.getElementById("calcButton").addEventListener("click", calcola);
+  document.getElementById("calcButton").addEventListener("click", calculate);
   document.getElementById("currentTimeButton").addEventListener("click", setCurrentTime);
 
   var oraMinArrivo = parseInt(document.getElementById("inputHour").getAttribute("min"), 10);
@@ -18,33 +24,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
   checkPauseValue();
 
-  function calcola() {
-    var ore = parseInt(document.getElementById("inputHour").value, 10);
-    var minuti = parseInt(document.getElementById("inputMinute").value, 10);
-    var pausa = parseInt(document.getElementById("inputPause").value, 10);
-    var jobHour = parseInt(document.getElementById("inputJobHours").value, 10);
+  function calculate() {
+    var ore = parseInt(inputHour.value, 10);
+    var minuti = parseInt(inputMinute.value, 10);
+    var pausa = parseInt(inputPause.value, 10);
+    var oreLavoro = parseInt(inputJobHours.value, 10);
     if (ore != null && ore>0) {
       if (minuti != null && minuti >=0) {
         if (pausa != null) {
             if(minuti >= 0 && minuti < 60){
               var minutiEntrata = ore * 60 + minuti;
               if(minutiEntrata>=(oraMinArrivo*60) && minutiEntrata<=((oraMaxArrivo+minutiMaxArrivo)*60)){
-                if(checkPauseValue){
-                  if(checkHourJobValue){
+                if(checkPauseValue()){
+                  if(checkHourJobValue()){
                     $('#result').collapse('show');
                     $('#info').collapse('hide');
-                    minutiComplessivi = jobHour * 60;
+                    minutiComplessivi = oreLavoro * 60;
                     minutiEffettivi = minutiComplessivi + minutiEntrata + pausa;
                     var oreFinali = parseInt(minutiEffettivi / 60, 10);
+                    var minutiFinali = minutiEffettivi % 60;
                     if(oreFinali==24){
                       oreFinali = 0;
                     }
-                    var minutiFinali = minutiEffettivi % 60;
                     var outputFinale = "";
-                    if (oreFinali < 10) {
-                      outputFinale += "0";
-                    }
-                    outputFinale += oreFinali + ":";
+                        if (oreFinali < 10) {
+                          outputFinale += "0";
+                        }
+                        outputFinale += oreFinali + ":";
                     if (minutiFinali < 10) {
                       outputFinale += "0";
                     }
@@ -58,8 +64,8 @@ document.addEventListener("DOMContentLoaded", function() {
                       return;
                     }
                   }
-                  else {
-                    showErrorMessage("Il numero di ore lavorative deve essere compresa tra "+jobMin +" e "+jobMax);
+                  else{
+                    showErrorMessage("Il numero di ore deve essere compreso tra "+jobMin +" e "+jobMax);
                   }
                 }
                 else{
@@ -85,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
     else {
       showErrorMessage("Inserisci le ore");
     }
-    
+    return;
   }
 
   function showErrorMessage(message){
@@ -111,67 +117,63 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function checkPauseValue() {
-    var inpPause = document.getElementById("inputPause");
-    var pause = parseInt(inpPause.value, 10);
+    var pause = parseInt(inputPause.value, 10);
     if (isNaN(pause) || pause < 0 || pause < pausaMin || pause > pausaMax) {
       /*
       alert(
         "La durata della pausa deve essere compresa tra i 30 e i 90 minuti"
       );
       */
-     inpPause.setAttribute("class", "form-control col-md-6 is-invalid");
+     inputPause.setAttribute("class", "form-control col-md-6 is-invalid");
      return false;
     }
     else {
-      inpPause.setAttribute("class", "form-control col-md-6 is-valid");
+      inputPause.setAttribute("class", "form-control col-md-6 is-valid");
       return true;
     }
   }
 
   function checkHourValue() {
-    var inpHour = (document.getElementById("inputHour"));
-    var ora = parseInt(inpHour.value, 10);
-    var inpMinute = (document.getElementById("inputMinute"));
+    var ora = parseInt(inputHour.value, 10);
     
     checkMinuteValue();
     if (isNaN(ora) || ora < oraMinArrivo || ora > oraMaxArrivo) {
-     inpHour.setAttribute("class", "form-control col-md-2 is-invalid");
-     inpMinute.setAttribute("class", "form-control col-md-2");
-     inpMinute.disabled = true;
+     inputHour.setAttribute("class", "form-control col-md-2 is-invalid");
+     inputMinute.setAttribute("class", "form-control col-md-2");
+     inputMinute.disabled = true;
      return false;
     }
     else {
-      inpHour.setAttribute("class", "form-control col-md-2 is-valid");
-      inpMinute.disabled = false;
-      if(parseInt(inpMinute.value, 10) == null){
-        inpMinute.value = "00";
+      inputHour.setAttribute("class", "form-control col-md-2 is-valid");
+      inputMinute.disabled = false;
+      if(parseInt(inputMinute.value, 10) == null){
+        inputMinute.value = "00";
       }
-      if(parseInt(inpHour.value,10)==9){
-        inpMinute.setAttribute("max", "30");
+      if(parseInt(inputHour.value,10)==9){
+        inputMinute.setAttribute("max", "30");
       }
       else {
-        inpMinute.setAttribute("max", "59");
+        inputMinute.setAttribute("max", "59");
       }
       return true;
     }
   }
 
   function checkMinuteValue() {
-    var inpMinute = (document.getElementById("inputMinute"));
-    var minuti = parseInt(inpMinute.value, 10);
+    var minuti = parseInt(inputMinute.value, 10);
     var max = 59;
-    var oraImpostata = parseInt(document.getElementById("inputHour").value, 10);
+    var oraImpostata = parseInt(inputHour.value, 10);
     if(oraImpostata==oraMaxArrivo){
       max = minutiMaxArrivo;
     }
     //alert(minuti);
-    inpMinute.setAttribute("max", max);
+    inputMinute.setAttribute("max", max);
     if (isNaN(minuti) || minuti==null || minuti < 0 || minuti > max) {
-      inpMinute.setAttribute("class", "form-control col-md-2 is-invalid");
+      inputMinute.setAttribute("class", "form-control col-md-2 is-invalid");
       return false;
     }
     else {
-      inpMinute.setAttribute("class", "form-control col-md-2 is-valid");
+      inputMinute.setAttribute("class", "form-control col-md-2 is-valid");
       return true;
     }
   }
