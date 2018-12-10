@@ -2,16 +2,19 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("inputPause").addEventListener("change", checkPauseValue);
   document.getElementById("inputHour").addEventListener("change", checkHourValue);
   document.getElementById("inputMinute").addEventListener("change", checkMinuteValue);
+  document.getElementById("inputJobHours").addEventListener("change", checkHourJobValue);
   document.getElementById("calcButton").addEventListener("click", calcola);
   document.getElementById("currentTimeButton").addEventListener("click", setCurrentTime);
 
-  var oraMinArrivo = 8;
-  var oraMaxArrivo = 9;
+  var oraMinArrivo = parseInt(document.getElementById("inputHour").getAttribute("min"), 10);
+  var oraMaxArrivo = parseInt(document.getElementById("inputHour").getAttribute("max"), 10);
   var minutiMaxArrivo = 30;
-  var pausaMin = 30;
-  var pausaMax = 90;
+  var pausaMin = parseInt(document.getElementById("inputPause").getAttribute("min"), 10);
+  var pausaMax = parseInt(document.getElementById("inputPause").getAttribute("max"), 10);
   var minutiComplessivi = 480; //8 ore lavorative
   var minutiEffettivi = 0;
+  var jobMin = 1;
+  var jobMax = parseInt(document.getElementById("inputJobHours").getAttribute("max"), 10);
 
   checkPauseValue();
 
@@ -19,69 +22,92 @@ document.addEventListener("DOMContentLoaded", function() {
     var ore = parseInt(document.getElementById("inputHour").value, 10);
     var minuti = parseInt(document.getElementById("inputMinute").value, 10);
     var pausa = parseInt(document.getElementById("inputPause").value, 10);
+    var jobHour = parseInt(document.getElementById("inputJobHours").value, 10);
     if (ore != null && ore>0) {
       if (minuti != null && minuti >=0) {
         if (pausa != null) {
             if(minuti >= 0 && minuti < 60){
               var minutiEntrata = ore * 60 + minuti;
-              if(minutiEntrata>=480 && minutiEntrata<=570){
+              if(minutiEntrata>=(oraMinArrivo*60) && minutiEntrata<=((oraMaxArrivo+minutiMaxArrivo)*60)){
                 if(checkPauseValue){
-                  $('#result').collapse('show');
-                  $('#info').collapse('hide');
-                  minutiEffettivi = minutiComplessivi + minutiEntrata + pausa;
-                  var oreFinali = parseInt(minutiEffettivi / 60, 10);
-                  var minutiFinali = minutiEffettivi % 60;
-                  var outputFinale = oreFinali + ":";
-                  if (minutiFinali < 10) {
-                    outputFinale += "0";
-                  }
-                  outputFinale += minutiFinali;
-                  if(isNaN(oreFinali) || isNaN(minutiFinali)){
-                    document.getElementById("output").innerHTML = "";
-                    document.getElementById("info").innerHTML = "Input non valido";
+                  if(checkHourJobValue){
+                    $('#result').collapse('show');
+                    $('#info').collapse('hide');
+                    minutiComplessivi = jobHour * 60;
+                    minutiEffettivi = minutiComplessivi + minutiEntrata + pausa;
+                    var oreFinali = parseInt(minutiEffettivi / 60, 10);
+                    if(oreFinali==24){
+                      oreFinali = 0;
+                    }
+                    var minutiFinali = minutiEffettivi % 60;
+                    var outputFinale = "";
+                    if (oreFinali < 10) {
+                      outputFinale += "0";
+                    }
+                    outputFinale += oreFinali + ":";
+                    if (minutiFinali < 10) {
+                      outputFinale += "0";
+                    }
+                    outputFinale += minutiFinali;
+                    if(isNaN(oreFinali) || isNaN(minutiFinali)){
+                      document.getElementById("output").innerHTML = "";
+                      document.getElementById("info").innerHTML = "Input non valido";
+                    }
+                    else {
+                      document.getElementById("output").innerHTML = outputFinale;
+                      return;
+                    }
                   }
                   else {
-                    document.getElementById("output").innerHTML = outputFinale;
-                    return;
+                    showErrorMessage("Il numero di ore lavorative deve essere compresa tra "+jobMin +" e "+jobMax);
                   }
                 }
                 else{
-                  document.getElementById("output").innerHTML = "";
-                  //alert("La pausa deve essere compresa tra "+pausaMin +" e "+pausaMax+" minuti");
-                  document.getElementById("info").innerHTML = "La pausa deve essere compresa tra "+pausaMin +" e "+pausaMax+" minuti";
+                  showErrorMessage("La pausa deve essere compresa tra "+pausaMin +" e "+pausaMax+" minuti");
                 }
               }
               else {
-                document.getElementById("output").innerHTML = "";
-                //alert("L'orario d'entrata deve essere compresa tra le "+oraMinArrivo +" e le "+oraMaxArrivo+":"+minutiMaxArrivo);
-                document.getElementById("info").innerHTML = "L'orario d'entrata deve essere compresa tra le "+oraMinArrivo +" e le "+oraMaxArrivo+":"+minutiMaxArrivo;
+                showErrorMessage("L'orario d'entrata deve essere compresa tra le "+oraMinArrivo +" e le "+oraMaxArrivo+":"+minutiMaxArrivo);
               }
             }
             else {
-              document.getElementById("output").innerHTML = "";
-              //alert("I minuti devono essere compresi tra 0 e 59");
-              document.getElementById("info").innerHTML = "I minuti devono essere compresi tra 0 e 59";
+              showErrorMessage("I minuti devono essere compresi tra 0 e 59");
             }
         }
         else {
-          document.getElementById("output").innerHTML = "";
-          //alert("Inserisci la pausa");
-          document.getElementById("info").innerHTML = "Inserisci la pausa";
+          showErrorMessage("Inserisci la pausa");
         }
       }
       else {
-        document.getElementById("output").innerHTML = "";
-        //alert("Inserisci i minuti");
-        document.getElementById("info").innerHTML = "Inserisci i minuti";
+        showErrorMessage("Inserisci i minuti");
       }
     }
     else {
-      document.getElementById("output").innerHTML = "";
-      //alert("Inserisci le ore");
-      document.getElementById("info").innerHTML = "Inserisci le ore";
+      showErrorMessage("Inserisci le ore");
     }
+    
+  }
+
+  function showErrorMessage(message){
+    document.getElementById("output").innerHTML = "";
+    //alert(message);
+    document.getElementById("info").innerHTML = message;
     $('#result').collapse('hide');
     $('#info').collapse('show');
+  }
+
+  function checkHourJobValue() {
+    var inpJobHour = document.getElementById("inputJobHours");
+    var jobHour = parseInt(inpJobHour.value, 10);
+
+    if (isNaN(jobHour) || jobHour < 0 || jobHour < jobMin || jobHour > jobMax) {
+     inpJobHour.setAttribute("class", "form-control col-md-4 is-invalid");
+     return false;
+    }
+    else {
+      inpJobHour.setAttribute("class", "form-control col-md-4 is-valid");
+      return true;
+    }
   }
 
   function checkPauseValue() {
@@ -93,11 +119,11 @@ document.addEventListener("DOMContentLoaded", function() {
         "La durata della pausa deve essere compresa tra i 30 e i 90 minuti"
       );
       */
-     inpPause.setAttribute("class", "form-control col-md-2 is-invalid");
+     inpPause.setAttribute("class", "form-control col-md-6 is-invalid");
      return false;
     }
     else {
-      inpPause.setAttribute("class", "form-control col-md-2 is-valid");
+      inpPause.setAttribute("class", "form-control col-md-6 is-valid");
       return true;
     }
   }
