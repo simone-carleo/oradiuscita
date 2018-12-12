@@ -65,15 +65,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                   }
                   else{
-                    showErrorMessage("Il numero di ore deve essere compreso tra "+jobMin +" e "+jobMax);
+                    showErrorMessage("Il numero di ore lavorative deve essere compreso tra "+jobMin +" e "+jobMax);
                   }
                 }
                 else{
-                  showErrorMessage("La pausa deve essere compresa tra "+pausaMin +" e "+pausaMax+" minuti");
+                  showErrorMessage("La durata del pranzo deve essere compresa tra "+pausaMin +" e "+pausaMax+" minuti");
                 }
               }
               else {
-                showErrorMessage("L'orario d'entrata deve essere compresa tra le "+oraMinArrivo +" e le "+oraMaxArrivo+":"+minutiMaxArrivo);
+                showErrorMessage("L'orario di ingresso deve essere compreso tra le "+oraMinArrivo +" e le "+oraMaxArrivo+":"+minutiMaxArrivo);
               }
             }
             else {
