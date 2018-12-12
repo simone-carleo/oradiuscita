@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (pausa != null) {
             if(minuti >= 0 && minuti < 60){
               var minutiEntrata = ore * 60 + minuti;
-              if(minutiEntrata>=(oraMinArrivo*60) && minutiEntrata<=((oraMaxArrivo+minutiMaxArrivo)*60)){
+              if(minutiEntrata>=(oraMinArrivo*60) && minutiEntrata<=((oraMaxArrivo*60)+minutiMaxArrivo)){
                 if(checkPauseValue()){
                   if(checkHourJobValue()){
                     $('#result').collapse('show');
