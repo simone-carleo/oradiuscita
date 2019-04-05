@@ -60,7 +60,17 @@ document.addEventListener("DOMContentLoaded", function() {
                       document.getElementById("info").innerHTML = "Input non valido";
                     }
                     else {
-                      document.getElementById("output").innerHTML = outputFinale;
+					  if(minutiEffettivi < minutiComplessivi){
+						diff = minutiComplessivi - minutiEffettivi;
+						document.getElementById("extra").innerHTML = "ROL da utilizzare: "+ diff + " minuti";
+					  }
+					  else if(minutiEffettivi > minutiComplessivi){
+						  diff = minutiEffettivi - minutiComplessivi;
+						  if(diff>30){
+							document.getElementById("extra").innerHTML = "Accantonamento banca ore: "+ diff + " minuti";
+						  }
+					  }
+					  document.getElementById("output").innerHTML = outputFinale;
                       return;
                     }
                   }
