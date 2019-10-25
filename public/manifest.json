@@ -1,0 +1,25 @@
+{
+  "name": "Calcola ora di uscita",
+  "short_name": "Ora di uscita",
+  "icons": [{
+      "src": "/images/clock144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }, {
+      "src": "/images/clock152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    }, {
+      "src": "/images/clock192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }, {
+      "src": "/images/clock512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }],
+  "start_url": "/home.html",
+  "display": "standalone",
+  "background_color": "#CBF8E8",
+  "theme_color": "#CCE5FF"
+}
