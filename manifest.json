@@ -1,7 +1,12 @@
 {
   "name": "Calcola ora di uscita",
   "short_name": "Ora di uscita",
+  "description": "Una semplice app per calcolare l'orario di uscita da lavoro",
   "icons": [{
+      "src": "/images/clock128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },{
       "src": "/images/clock144x144.png",
       "sizes": "144x144",
       "type": "image/png"
