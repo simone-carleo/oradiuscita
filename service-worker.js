@@ -1,29 +1,52 @@
 var CACHE_NAME = 'static-cache';
-var urlsToCache = [
+var FILES_TO_CACHE = [
   '.',
   'home.html',
   'script.js',
-  'style.css'
+  'style.css',
+  'favicon.ico'
 ];
 self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-    .then(function(cache) {
-      return cache.addAll(urlsToCache);
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('[ServiceWorker] Pre-caching offline page');
+      return cache.addAll(FILES_TO_CACHE);
     })
-  );
+);
+self.skipWaiting();
 });
 
+self.addEventListener('activate', function(event) {
+	evt.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(keyList.map((key) => {
+        if (key !== CACHE_NAME) {
+          console.log('[ServiceWorker] Removing old cache', key);
+          return caches.delete(key);
+        }
+      }));
+    })
+);
+self.clients.claim();
+}
 
 self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-    .then(function(response) {
-      return response || fetchAndCache(event.request);
-    })
-  );
+  if (evt.request.mode !== 'navigate') {
+  // Not a page navigation, bail.
+  return;
+}
+evt.respondWith(
+    fetch(evt.request)
+        .catch(() => {
+          return caches.open(CACHE_NAME)
+              .then((cache) => {
+                return cache.match('home.html');
+              });
+        })
+);
 });
 
+/*
 function fetchAndCache(url) {
   return fetch(url)
   .then(function(response) {
@@ -42,3 +65,4 @@ function fetchAndCache(url) {
     // You could return a custom offline 404 page here
   });
 }
+*/
