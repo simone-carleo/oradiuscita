@@ -19,12 +19,16 @@
       "sizes": "192x192",
       "type": "image/png"
     }, {
+      "src": "/images/clock256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }, {
       "src": "/images/clock512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }],
   "start_url": "/home.html",
   "display": "standalone",
-  "background_color": "#CBF8E8",
-  "theme_color": "#CCE5FF"
+  "background_color": "#cbf8e8",
+  "theme_color": "#cce5ff"
 }
