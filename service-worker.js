@@ -1,10 +1,10 @@
-var CACHE_NAME = 'static-cache';
+var CACHE_NAME = 'static-cachev1';
 var FILES_TO_CACHE = [
   '.',
-  'home.html',
-  'script.js',
-  'style.css',
-  'favicon.ico'
+  '/home.html',
+  '/script.js',
+  '/style.css',
+  '/favicon.ico'
 ];
 self.addEventListener('install', function(event) {
   evt.waitUntil(
