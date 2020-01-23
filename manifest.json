@@ -2,9 +2,9 @@
   "name": "Calcola ora di uscita",
   "short_name": "Ora di uscita",
   "description": "Una semplice app per calcolare l'orario di uscita da lavoro",
-  "start_url": "/home.html",
+  "start_url": "/",
   "display": "standalone",
-  "scope": "/",
+  
   "background_color": "#cbf8e8",
   "theme_color": "#cce5ff",
   "icons": [{
