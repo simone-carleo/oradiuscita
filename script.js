@@ -14,13 +14,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
   var oraMinArrivo = parseInt(document.getElementById("inputHour").getAttribute("min"), 10);
   var oraMaxArrivo = parseInt(document.getElementById("inputHour").getAttribute("max"), 10);
-  var minutiMaxArrivo = 30;
+  var minutiMaxArrivo = 0;
   var pausaMin = parseInt(document.getElementById("inputPause").getAttribute("min"), 10);
   var pausaMax = parseInt(document.getElementById("inputPause").getAttribute("max"), 10);
   var minutiComplessivi = 480; //8 ore lavorative
   var minutiEffettivi = 0;
-  var jobMin = 1;
-  var jobMax = parseInt(document.getElementById("inputJobHours").getAttribute("max"), 10);
+  var jobHourMin = parseInt(document.getElementById("inputJobHours").getAttribute("min"), 10);
+  var jobHourMax = parseInt(document.getElementById("inputJobHours").getAttribute("max"), 10);
+  var jobMinuteMin = parseInt(document.getElementById("inputJobMinutes").getAttribute("min"), 10);
+  var jobMinuteMax = parseInt(document.getElementById("inputJobMinutes").getAttribute("max"), 10);
 
   checkPauseValue();
 
@@ -29,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var minuti = parseInt(inputMinute.value, 10);
     var pausa = parseInt(inputPause.value, 10);
     var oreLavoro = parseInt(inputJobHours.value, 10);
+    var minutiLavoro = parseInt(inputJobMinutes.value, 10);
     if (ore != null && ore>0) {
       if (minuti != null && minuti >=0) {
         if (pausa != null) {
@@ -39,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
                   if(checkHourJobValue()){
                     $('#result').collapse('show');
                     $('#info').collapse('hide');
-                    minutiComplessivi = oreLavoro * 60;
+                    minutiComplessivi = oreLavoro * 60 + minutiLavoro;
                     minutiEffettivi = minutiComplessivi + minutiEntrata + pausa;
                     var oreFinali = parseInt(minutiEffettivi / 60, 10);
                     var minutiFinali = minutiEffettivi % 60;
@@ -65,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                   }
                   else{
-                    showErrorMessage("Il numero di ore lavorative deve essere compreso tra "+jobMin +" e "+jobMax);
+                    showErrorMessage("Il numero di ore lavorative deve essere compreso tra "+jobHourMin +" e "+jobHourMax);
                   }
                 }
                 else{
@@ -106,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var inpJobHour = document.getElementById("inputJobHours");
     var jobHour = parseInt(inpJobHour.value, 10);
 
-    if (isNaN(jobHour) || jobHour < 0 || jobHour < jobMin || jobHour > jobMax) {
+    if (isNaN(jobHour) || jobHour < 0 || jobHour < jobHourMin || jobHour > jobHourMax) {
      inpJobHour.setAttribute("class", "form-control col-md-4 is-invalid");
      return false;
     }
