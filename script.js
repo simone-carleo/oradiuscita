@@ -11,10 +11,16 @@ document.addEventListener("DOMContentLoaded", function() {
   //document.getElementById("calcButton").addEventListener("click", calcola);
   document.getElementById("calcButton").addEventListener("click", calculate);
   document.getElementById("currentTimeButton").addEventListener("click", setCurrentTime);
+  document.getElementById("standardJob").addEventListener("click", setStandardJobDuration);;
+  document.getElementById("liteJob").addEventListener("click", setLiteJobDuration);;
 
   var oraMinArrivo = parseInt(document.getElementById("inputHour").getAttribute("min"), 10);
   var oraMaxArrivo = parseInt(document.getElementById("inputHour").getAttribute("max"), 10);
   var minutiMaxArrivo = 0;
+  var hourMaxJobStandard = 8;
+  var minuteMaxJobStandard = 0;
+  var hourMaxJobLite = 7;
+  var minuteMaxJobLite = 36;
   var pausaMin = parseInt(document.getElementById("inputPause").getAttribute("min"), 10);
   var pausaMax = parseInt(document.getElementById("inputPause").getAttribute("max"), 10);
   var minutiComplessivi = 480; //8 ore lavorative
@@ -186,6 +192,16 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("inputHour").value = current.getHours();
     document.getElementById("inputMinute").value = current.getMinutes();
     checkHourValue();
+  }
+
+  function setStandardJobDuration(){
+    document.getElementById("inputJobHours").value = hourMaxJobStandard;
+    document.getElementById("inputJobMinutes").value = minuteMaxJobStandard;
+  }
+
+  function setLiteJobDuration(){
+    document.getElementById("inputJobHours").value = hourMaxJobLite;
+    document.getElementById("inputJobMinutes").value = minuteMaxJobLite;
   }
 
 
