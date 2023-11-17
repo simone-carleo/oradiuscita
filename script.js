@@ -158,8 +158,8 @@ document.addEventListener("DOMContentLoaded", function() {
       if(parseInt(inputMinute.value, 10) == null){
         inputMinute.value = "00";
       }
-      if(parseInt(inputHour.value,10)==9){
-        inputMinute.setAttribute("max", "30");
+      if(parseInt(inputHour.value,10)==10){
+        inputMinute.setAttribute("max", "0");
       }
       else {
         inputMinute.setAttribute("max", "59");
