@@ -1,12 +1,116 @@
+:root {
+    --bg-color: #e6f7ff;
+    --text-color: #333;
+    --primary-color: #007bff;
+    --button-bg: #28a745;
+    --button-hover: #218838;
+    --section-bg: #d9e8f6;
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #f8f8f8;
+    --primary-color: #64B5F6; /* Blu professionale */
+    --button-bg: #388E3C; /* Verde scuro per i pulsanti */
+    --button-hover: #2E7D32;
+    --section-bg: #1e1e1e;
+}
+
 body {
-  background: #cbf8e8;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    transition: background 0.3s, color 0.3s;
 }
-#inputHour, #inputPause, #inputJobHours {
-  text-align: center;
+
+.container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
 }
-#inputMinute {
-  text-align: left;
+
+h1 {
+    font-size: 24px;
 }
-#currentTimeButton, #output {
-  margin-left: 2%;
+
+.section {
+    background-color: var(--section-bg);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+h2 {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+input {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.dark-mode input {
+    background: #333;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+button {
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: var(--button-hover);
+}
+
+.preset-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px; /* Aggiunto spazio sopra */
+    margin-bottom: 15px; /* Aggiunto spazio sotto */
+}
+
+.preset {
+    background-color: var(--primary-color);
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    height: 18px;
+}
+
+#result {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.theme-toggle {
+    margin-top: 20px;
 }

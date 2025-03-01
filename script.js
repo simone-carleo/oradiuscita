@@ -1,209 +1,69 @@
-document.addEventListener("DOMContentLoaded", function() {
-  var inputHour = document.getElementById("inputHour");
-  var inputMinute = document.getElementById("inputMinute");
-  var inputPause = document.getElementById("inputPause");
-  var inputJobHours = document.getElementById("inputJobHours");
+function validateInputs() {
+    let hour = parseInt(document.getElementById("hour").value);
+    let minute = parseInt(document.getElementById("minute").value);
+    let lunch = parseInt(document.getElementById("lunch").value);
+    let workHours = parseInt(document.getElementById("workHours").value);
+    let workMinutes = parseInt(document.getElementById("workMinutes").value);
 
-  inputPause.addEventListener("change", checkPauseValue);
-  inputHour.addEventListener("change", checkHourValue);
-  inputMinute.addEventListener("change", checkMinuteValue);
-  inputJobHours.addEventListener("change", checkHourJobValue);
-  //document.getElementById("calcButton").addEventListener("click", calcola);
-  document.getElementById("calcButton").addEventListener("click", calculate);
-  document.getElementById("currentTimeButton").addEventListener("click", setCurrentTime);
-  document.getElementById("standardJob").addEventListener("click", setStandardJobDuration);;
-  document.getElementById("liteJob").addEventListener("click", setLiteJobDuration);;
+    let isValid = true;
 
-  var oraMinArrivo = parseInt(document.getElementById("inputHour").getAttribute("min"), 10);
-  var oraMaxArrivo = parseInt(document.getElementById("inputHour").getAttribute("max"), 10);
-  var minutiMaxArrivo = 0;
-  var hourMaxJobStandard = 8;
-  var minuteMaxJobStandard = 0;
-  var hourMaxJobLite = 7;
-  var minuteMaxJobLite = 36;
-  var pausaMin = parseInt(document.getElementById("inputPause").getAttribute("min"), 10);
-  var pausaMax = parseInt(document.getElementById("inputPause").getAttribute("max"), 10);
-  var minutiComplessivi = 480; //8 ore lavorative
-  var minutiEffettivi = 0;
-  var jobHourMin = parseInt(document.getElementById("inputJobHours").getAttribute("min"), 10);
-  var jobHourMax = parseInt(document.getElementById("inputJobHours").getAttribute("max"), 10);
-  var jobMinuteMin = parseInt(document.getElementById("inputJobMinutes").getAttribute("min"), 10);
-  var jobMinuteMax = parseInt(document.getElementById("inputJobMinutes").getAttribute("max"), 10);
-
-  checkPauseValue();
-
-  function calculate() {
-    var ore = parseInt(inputHour.value, 10);
-    var minuti = parseInt(inputMinute.value, 10);
-    var pausa = parseInt(inputPause.value, 10);
-    var oreLavoro = parseInt(inputJobHours.value, 10);
-    var minutiLavoro = parseInt(inputJobMinutes.value, 10);
-    if (ore != null && ore>0) {
-      if (minuti != null && minuti >=0) {
-        if (pausa != null) {
-            if(minuti >= 0 && minuti < 60){
-              var minutiEntrata = ore * 60 + minuti;
-              if(minutiEntrata>=(oraMinArrivo*60) && minutiEntrata<=((oraMaxArrivo*60)+minutiMaxArrivo)){
-                if(checkPauseValue()){
-                  if(checkHourJobValue()){
-                    $('#result').collapse('show');
-                    $('#info').collapse('hide');
-                    minutiComplessivi = oreLavoro * 60 + minutiLavoro;
-                    minutiEffettivi = minutiComplessivi + minutiEntrata + pausa;
-                    var oreFinali = parseInt(minutiEffettivi / 60, 10);
-                    var minutiFinali = minutiEffettivi % 60;
-                    if(oreFinali==24){
-                      oreFinali = 0;
-                    }
-                    var outputFinale = "";
-                        if (oreFinali < 10) {
-                          outputFinale += "0";
-                        }
-                        outputFinale += oreFinali + ":";
-                    if (minutiFinali < 10) {
-                      outputFinale += "0";
-                    }
-                    outputFinale += minutiFinali;
-                    if(isNaN(oreFinali) || isNaN(minutiFinali)){
-                      document.getElementById("output").innerHTML = "";
-                      document.getElementById("info").innerHTML = "Input non valido";
-                    }
-                    else {
-                      document.getElementById("output").innerHTML = outputFinale;
-                      return;
-                    }
-                  }
-                  else{
-                    showErrorMessage("Il numero di ore lavorative deve essere compreso tra "+jobHourMin +" e "+jobHourMax);
-                  }
-                }
-                else{
-                  showErrorMessage("La durata del pranzo deve essere compresa tra "+pausaMin +" e "+pausaMax+" minuti");
-                }
-              }
-              else {
-                showErrorMessage("L'orario di ingresso deve essere compreso tra le "+oraMinArrivo +" e le "+oraMaxArrivo+":"+minutiMaxArrivo);
-              }
-            }
-            else {
-              showErrorMessage("I minuti devono essere compresi tra 0 e 59");
-            }
-        }
-        else {
-          showErrorMessage("Inserisci la pausa");
-        }
-      }
-      else {
-        showErrorMessage("Inserisci i minuti");
-      }
+    // Controllo orario di ingresso
+    if (hour < 8 || hour > 18) {
+        document.getElementById("hourError").textContent = "L'orario deve essere tra le 8:00 e le 18:00";
+        isValid = false;
+    } else {
+        document.getElementById("hourError").textContent = "";
     }
-    else {
-      showErrorMessage("Inserisci le ore");
+
+    // Controllo durata del pranzo
+    if (lunch < 30 || lunch > 90) {
+        document.getElementById("lunchError").textContent = "La pausa pranzo deve essere tra 30 e 90 minuti";
+        isValid = false;
+    } else {
+        document.getElementById("lunchError").textContent = "";
     }
-    return;
-  }
 
-  function showErrorMessage(message){
-    document.getElementById("output").innerHTML = "";
-    //alert(message);
-    document.getElementById("info").innerHTML = message;
-    $('#result').collapse('hide');
-    $('#info').collapse('show');
-  }
-
-  function checkHourJobValue() {
-    var inpJobHour = document.getElementById("inputJobHours");
-    var jobHour = parseInt(inpJobHour.value, 10);
-
-    if (isNaN(jobHour) || jobHour < 0 || jobHour < jobHourMin || jobHour > jobHourMax) {
-     inpJobHour.setAttribute("class", "form-control col-md-4 is-invalid");
-     return false;
+    // Controllo durata giornata lavorativa
+    if (workHours < 2 || workHours > 12) {
+        document.getElementById("workError").textContent = "Le ore di lavoro devono essere tra 2 e 12";
+        isValid = false;
+    } else {
+        document.getElementById("workError").textContent = "";
     }
-    else {
-      inpJobHour.setAttribute("class", "form-control col-md-4 is-valid");
-      return true;
-    }
-  }
 
-  function checkPauseValue() {
-    var pause = parseInt(inputPause.value, 10);
-    if (isNaN(pause) || pause < 0 || pause < pausaMin || pause > pausaMax) {
-      /*
-      alert(
-        "La durata della pausa deve essere compresa tra i 30 e i 90 minuti"
-      );
-      */
-     inputPause.setAttribute("class", "form-control col-md-6 is-invalid");
-     return false;
-    }
-    else {
-      inputPause.setAttribute("class", "form-control col-md-6 is-valid");
-      return true;
-    }
-  }
+    return isValid;
+}
 
-  function checkHourValue() {
-    var ora = parseInt(inputHour.value, 10);
-    
-    checkMinuteValue();
-    if (isNaN(ora) || ora < oraMinArrivo || ora > oraMaxArrivo) {
-     inputHour.setAttribute("class", "form-control col-md-2 is-invalid");
-     inputMinute.setAttribute("class", "form-control col-md-2");
-     inputMinute.disabled = true;
-     return false;
-    }
-    else {
-      inputHour.setAttribute("class", "form-control col-md-2 is-valid");
-      inputMinute.disabled = false;
-      if(parseInt(inputMinute.value, 10) == null){
-        inputMinute.value = "00";
-      }
-      if(parseInt(inputHour.value,10)==10){
-        inputMinute.setAttribute("max", "0");
-      }
-      else {
-        inputMinute.setAttribute("max", "59");
-      }
-      return true;
-    }
-  }
+document.getElementById("calculate").addEventListener("click", function() {
+    if (!validateInputs()) return;
 
-  function checkMinuteValue() {
-    var minuti = parseInt(inputMinute.value, 10);
-    var max = 59;
-    var oraImpostata = parseInt(inputHour.value, 10);
-    if(oraImpostata==oraMaxArrivo){
-      max = minutiMaxArrivo;
-    }
-    //alert(minuti);
-    inputMinute.setAttribute("max", max);
-    if (isNaN(minuti) || minuti==null || minuti < 0 || minuti > max) {
-      inputMinute.setAttribute("class", "form-control col-md-2 is-invalid");
-      return false;
-    }
-    else {
-      inputMinute.setAttribute("class", "form-control col-md-2 is-valid");
-      return true;
-    }
-  }
+    let hour = parseInt(document.getElementById("hour").value);
+    let minute = parseInt(document.getElementById("minute").value);
+    let lunch = parseInt(document.getElementById("lunch").value);
+    let workHours = parseInt(document.getElementById("workHours").value);
+    let workMinutes = parseInt(document.getElementById("workMinutes").value);
 
-  function setCurrentTime(){
-    var current = new Date();
-    document.getElementById("inputHour").value = current.getHours();
-    document.getElementById("inputMinute").value = current.getMinutes();
-    checkHourValue();
-  }
+    let totalMinutes = (hour * 60 + minute) + (workHours * 60 + workMinutes) + lunch;
+    let exitHour = Math.floor(totalMinutes / 60) % 24;
+    let exitMinute = totalMinutes % 60;
 
-  function setStandardJobDuration(){
-    document.getElementById("inputJobHours").value = hourMaxJobStandard;
-    document.getElementById("inputJobMinutes").value = minuteMaxJobStandard;
-  }
+    let result = `Orario di uscita: ${exitHour.toString().padStart(2, '0')}:${exitMinute.toString().padStart(2, '0')}`;
+    document.getElementById("result").textContent = result;
+});
 
-  function setLiteJobDuration(){
-    document.getElementById("inputJobHours").value = hourMaxJobLite;
-    document.getElementById("inputJobMinutes").value = minuteMaxJobLite;
-  }
+document.getElementById("now").addEventListener("click", function() {
+    let now = new Date();
+    document.getElementById("hour").value = Math.max(8, Math.min(18, now.getHours()));
+    document.getElementById("minute").value = now.getMinutes();
+});
 
+document.querySelectorAll(".preset").forEach(button => {
+    button.addEventListener("click", function() {
+        document.getElementById("workHours").value = this.getAttribute("data-hours");
+        document.getElementById("workMinutes").value = this.getAttribute("data-minutes");
+    });
+});
 
-  //document.getElementById("output").innerHTML = "Documento caricato";
+document.getElementById("toggleTheme").addEventListener("click", function() {
+    document.body.classList.toggle("dark-mode");
 });

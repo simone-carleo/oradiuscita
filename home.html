@@ -1,116 +1,62 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="it">
 <head>
-	<link rel="manifest" href="/manifest.json">
-	<meta name="theme-color" content="#cbf8e8" />
-	<meta name="description" content="Una semplice app per calcolare l'orario di uscita da lavoro">
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-136786006-1"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css" />
-    <title>Calcola orario uscita</title>
-    <link rel="shortcut icon" href="favicon.ico" /> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolo Orario di Uscita</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-<script type="text/javascript" src="script.js"></script>
+    <div class="container">
+        <h1>Calcola Orario di Uscita</h1>
 
-<div class="container">
-    <div class="container-fluid">
-        <p class="display-4">Calcola orario di uscita:</p>
-    </div>
-    <div class="row justify-content-center">
-    <div class="alert alert-primary col-md-6" id="mainDiv">
-        <div class="input-group">
-            <label class="col-xs-12 col-md-12 col-form-label mr-2">Orario di ingresso:</label>
-            <input type="number" class="form-control col-md-2" id="inputHour" min="8" max="10" value="8" placeholder="hh">
-            <div class="input-group-append input-group-prepend">
-                <span class="input-group-text">:</span>
+        <!-- Sezione Orario di Ingresso -->
+        <div class="section">
+            <h2>Orario di ingresso</h2>
+            <div class="input-group">
+                <input type="number" id="hour" min="8" max="18" value="8"> :
+                <input type="number" id="minute" min="0" max="59" value="0">
+                <button id="now">Adesso</button>
             </div>
-            <input type="number" class="form-control col-md-2" id="inputMinute" min="0" max="59" value="0" placeholder="mm">
-            <input type="button" class="btn btn-outline-primary col-xs-12 col-md-3 mr-2" id="currentTimeButton" value="adesso">
+            <p class="error" id="hourError"></p>
         </div>
-        <br>
-        <div class="row">
-            <div class="input-group col-md-5">
-                <label class="col-xs-3 col-md-12 col-form-label mr-2">Durata del pranzo:</label>
-                <input type="number" class="form-control col-md-6" min="30" max="90" id="inputPause" value="30">
-                <div class="input-group-append">
-                    <span class="input-group-text">minuti</span>
-                </div>
+
+        <!-- Sezione Durata Pausa Pranzo -->
+        <div class="section">
+            <h2>Pausa pranzo</h2>
+            <div class="input-group">
+                <input type="number" id="lunch" min="30" max="90" value="30"> minuti
             </div>
+            <p class="error" id="lunchError"></p>
         </div>
-        <br>
-        <div class="row">
-            <div class="input-group col-md-12">
-                <label class="col-xs-3 col-md-12 col-form-label mr-2">Durata della giornata lavorativa:</label>
 
-                <input type="number" class="form-control col-md-3" min="0" max="12" id="inputJobHours" value="8" placeholder="hh">
-                <div class="input-group-append">
-                    <span class="input-group-text">ore</span>
-                </div>
-
-                <input type="number" class="form-control col-md-3 ml-4" min="0" max="59" id="inputJobMinutes" value="0" placeholder="mm">
-                <div class="input-group-append mr-4">
-                    <span class="input-group-text">minuti</span>
-                </div>
-
-                <div class="form-check col-md-4">
-                    <input class="form-check-input" type="radio" name="quickJob" id="standardJob" value="8">
-                    <label class="form-check-label mr-4" for="standardJob">8:00</label>
-                    <input class="form-check-input" type="radio" name="quickJob" id="liteJob" value="736">
-                    <label class="form-check-label" for="liteJob">7:36</label>
-                </div>
+        <!-- Sezione Durata Giornata Lavorativa -->
+        <div class="section">
+            <h2>Durata giornata lavorativa</h2>
+            <div class="input-group">
+                <input type="number" id="workHours" min="2" max="12" value="8"> ore 
+                <input type="number" id="workMinutes" min="0" max="59" value="0"> minuti
             </div>
+            <div class="presets">
+                <button class="preset" data-hours="8" data-minutes="0">8:00</button>
+                <button class="preset" data-hours="7" data-minutes="36">7:36</button>
+            </div>
+            <p class="error" id="workError"></p>
         </div>
-                <!--
-                <div class="container input-group col-md-6">
-                    <input type="range" class="custom-range" min="30" max="90"  step="1" id="pauseRange">
-                </div>
-                -->
-        <br>
-        <input type="button" class="btn btn-success col-xs-12 col-md-3 mr-4" id="calcButton" value="Calcola"> 
-        <div class="container">
-            
-        </div>
-        <br>
-        <div class="collapse" id="result">
-            <span class="h5">Orario di uscita: </span>
-            <span class="well h2 float-center" id="output"></span>
-        </div>
-    </div>
-    <div class="row justify-content-center col-md-12">
-        <div class="alert alert-danger collapse" role="alert" id="info">
-            <span class="well h2 float-center" id="infoText"></span>
+
+        <!-- Pulsante di Calcolo -->
+        <button id="calculate">Calcola</button>
+
+        <!-- Risultato -->
+        <p id="result"></p>
+
+        <!-- Selettore Tema -->
+        <div class="theme-toggle">
+            <label> Tema: </label>
+            <button id="toggleTheme">🌞 / 🌙</button>
         </div>
     </div>
-</div>
-    <div class="row justify-content-center">Codice disponibile su&nbsp;  <a href="https://github.com/simone-carleo/ora-di-uscita">Github</a>
-    </div>
-</div>
-<script>
-	if ('serviceWorker' in navigator) {
-		window.addEventListener('load', () => {
-			navigator.serviceWorker.register('/service-worker.js')
-			.then((reg) => {
-				console.log('Service worker registered.', reg);
-			});
-		});
-	}
-	</script>
+
+    <script src="script.js"></script>
 </body>
 </html>
