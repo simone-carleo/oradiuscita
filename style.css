@@ -47,6 +47,16 @@ h2 {
     font-size: 18px;
 }
 
+a {
+    color: var(--button-bg);
+    font-size: 18px;
+}
+
+.repo-ref {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
 .input-group {
     display: flex;
     justify-content: center;
